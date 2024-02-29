@@ -9,36 +9,35 @@
 class Solution:
     # 快排改进
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        L, R = 0, len(nums)
+        def quickSort(nums, left, right):
+            pivot = random.randint(left, right)
+            nums[pivot], nums[left] = nums[left], nums[pivot]
+            tar = nums[left]
 
-        def quickSort(L, R):
-            if L >= R:
-                return
-            
-            if R - L == 1:
-                if nums[L] > nums[R]:
-                    temp = nums[R]
-                    nums[R] = nums[L]
-                    nums[L] = temp
-            
-            mid_val = nums[L]
-            old_L, old_R = L, R
-
+            L, R = left, right
             while L < R:
-                tf = 0
-                while L < R:
-                    if nums[L] > mid_val:
-                        tf += 1
-                        break
-                    L += 1
-                while L < R:
-                    if nums[R] < mid_val:
-                        tf += 1
-                        break
+                while L < R and nums[R] >= tar:
                     R -= 1
-                if tf == 2:
-                    temp = nums[L]
-                    nums[L] = nums[R]
-                    nums[R] = temp
+                nums[L] = nums[R]
+                while L < R and nums[L] <= tar:
+                    L += 1
+                nums[R] = nums[L]
+
+            nums[L] = tar
+            if L == len(nums) - k:
+                return nums[L]
+            elif L < len(nums) - k:
+                while L < len(nums) - k and nums[L] == nums[L+1]:
+                    L += 1
+                if L == len(nums) - k:
+                    return nums[L]
+                return quickSort(nums, L + 1, right)
+            else:
+                while L > len(nums) - k and nums[L-1] == nums[L]:
+                    L -= 1
+                if L == len(nums) - k:
+                    return nums[L]
+                return quickSort(nums, left, L - 1)
+        return quickSort(nums, 0, len(nums) - 1)
             
                 
