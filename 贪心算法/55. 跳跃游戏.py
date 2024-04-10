@@ -37,6 +37,22 @@ class Solution:
                 stack[tmp] = 1
             cur += 1
         return False
+
+# 20240410
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        cur_max, cur = 0, 0
+        n = len(nums)
+        while cur < n:
+            old_max = cur_max
+            for p in range(cur, old_max+1):
+                if p >= n-1:
+                    return True
+                cur_max = max(cur_max, p + nums[p])
+            if cur_max == old_max:
+                break
+            cur = old_max
+        return cur_max >= n
         
 s1 = Solution()
 nums = [2,3,1,1,4]
