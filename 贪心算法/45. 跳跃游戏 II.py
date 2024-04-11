@@ -25,3 +25,21 @@ class Solution:
                     cur_max = i + nums[i]
             cur_min = old_max
         return ans
+
+# 20240411
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        if len(nums) < 2:
+            return 0
+        count = 1
+        cur_begin = 0
+        cur_end = nums[0]
+
+        while cur_end < len(nums) - 1:
+            cur_max = 0
+            for i in range(cur_begin+1, cur_end+1):
+                cur_max = max(cur_max, i + nums[i])
+            cur_begin = cur_end
+            cur_end = cur_max
+            count += 1
+        return count
